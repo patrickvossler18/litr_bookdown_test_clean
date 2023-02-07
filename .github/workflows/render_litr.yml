@@ -80,8 +80,11 @@ jobs:
           git config --local user.email "$GITHUB_ACTOR@users.noreply.github.com"
           git config --local push.autoSetupRemote true
           git fetch --all
-          git checkout -b build_output
-          git branch -u origin/build_output
+          git checkout -B build_output
+          # git ls-remote --heads origin build_output | grep build_output >/dev/null
+          # if [[ "$?" == "1" ]]; then
+          #   git branch -u origin/build_output
+          # fi
           if [[ $IS_BOOKDOWN = true ]]; then
             git add ${PKG_NAME}/ _book/ 
           else
@@ -89,4 +92,4 @@ jobs:
             git add ${RMD_FILENAME}.* ${PKG_NAME}/
           fi
           git commit -m 'Re-build Litr file and package' || echo "No changes to commit"
-          git push origin build_output -fu || echo "No changes to commit"
+          git push -fu origin build_output || echo "No changes to commit"
